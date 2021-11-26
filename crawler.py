@@ -28,7 +28,7 @@ def serialize(key):
 
 
 def get_file(path):
-    if (os.path.exists(path)):
+    if os.path.exists(path):
         f = open(path)
         content = f.read()
         f.close()
@@ -59,7 +59,8 @@ class Crawler:
                     self.__crawl(entry.name)
                 else:
                     self.__sidebar[deserialize(dir, type="DIR")].append(
-                        deserialize(entry.name))
+                        deserialize(entry.name)
+                    )
 
     def get_sidebar(self):
         return self.__sidebar
@@ -95,8 +96,13 @@ class Crawler:
             page_content = self.page_content()
             key = "README"
 
-        res = {"title": self.__metadata["title"], "key": key,
-               "sidebar": self.__sidebar, "nav_links": self.__metadata["nav_links"], "header_tags": self.preload_headers()}
+        res = {
+            "title": self.__metadata["title"],
+            "key": key,
+            "sidebar": self.__sidebar,
+            "nav_links": self.__metadata["nav_links"],
+            "header_tags": self.preload_headers(),
+        }
 
         root_pages = res["sidebar"].get("")
         if root_pages:
