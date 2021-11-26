@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+markdown
+jinja2
+deta
+python-dotenv
+aiofiles
+python-multipart
+lxml

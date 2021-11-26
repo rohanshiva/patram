@@ -1,0 +1,140 @@
+<html>
+
+<head>
+    <title>{{title}}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@100;200;300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    {% block head %}
+    {% for tag in header_tags %}
+    <link rel="preload" href="{{tag}}" as="fetch">
+    {% endfor %}
+    {% endblock %}
+
+</head>
+
+<body>
+    <nav>
+        <h1>
+            {{title}}
+        </h1>
+        <div class="nav_links">
+            {% for link in nav_links %}
+            <a href="{{ nav_links[link] }}">
+                {{link}}
+            </a>
+            {% endfor %}
+        </div>
+    </nav>
+    <div class="wrapper">
+        <div class="sidebar" id="sidebar">
+            {% for dir in sidebar %}
+            <a class="key dir">{{ dir }}</a>
+            {% for note in sidebar[dir] %}
+            {% if key == note %}
+            <a class="key selected" key="{{ note }}" dir="{{dir}}" name="link" onclick="switchNote(this)">{{ note
+                }}</a>
+            {% else %}
+            <a class="key" key="{{ note }}" dir="{{dir}}" name="link" onclick="switchNote(this)">{{ note }}</a>
+            {% endif %}
+            {% endfor %}
+            {% endfor %}
+        </div>
+        <div class="content" id="note_content">
+            {{note|safe}}
+        </div>
+    </div>
+
+</body>
+<script>
+    function removeSelectedLinks() {
+        var elements = document.getElementsByName("link");
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].classList.remove("selected");
+        }
+    }
+    function serialize(key) {
+        let words = key.split(" ");
+        words = words.map(word => word.charAt(0).toLowerCase() + word.substr(1));
+        const serializedKey = words.join("-");
+        return serializedKey;
+    }
+    async function switchNote(link) {
+        let key = link.getAttribute("key");
+        let dir = link.getAttribute("dir");
+        dir = serialize(dir);
+        key = serialize(key);
+        const path = dir === "" ? `${key}` : `${dir}/${key}`
+        const url = `/raw/${path}`
+        const res = await fetch(url);
+        const content = await res.json();
+        document.getElementById("note_content").innerHTML = content;
+        removeSelectedLinks();
+        link.classList.add("selected");
+        const pageUrl = `${location.origin}/${path}`
+        const title = "Peaks";
+        const state = {};
+        window.history.pushState(null, null, pageUrl);
+    }
+
+
+</script>
+<style>
+    html {
+        font-family: 'IBM Plex Mono', monospace;
+    }
+
+    nav {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .nav_links {
+        display: flex;
+        flex-direction: row;
+        gap: 1rem;
+    }
+
+    .wrapper {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        width: 240px;
+        max-width: 240px;
+    }
+    .content {
+        height: calc(100vh - 45px);
+        width: 100%;
+        overflow-y: scroll;
+    }
+    a {
+        color: black;
+        text-decoration: none;
+    }
+
+    .key {
+        padding: 0.5rem;
+        font-size: 18px;
+        color: black;
+        text-decoration: none;
+    }
+
+    .dir {
+        font-size: 24px;
+    }
+
+
+    .selected {
+        color: blue;
+    }
+</style>
+
+</html>
