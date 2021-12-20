@@ -75,15 +75,7 @@ class Crawler:
         res = []
         for dir in self.__sidebar:
             for page in self.__sidebar[dir]:
-                if dir == "":
-
-                    serialized_page = serialize(page)
-                    path = f"/raw/{serialized_page}"
-                else:
-
-                    serialized_dir = serialize(dir)
-                    serialized_page = serialize(page)
-                    path = f"/raw/{serialized_dir}/{serialized_page}"
+                path = f"/raw/{serialize(page)}" if dir == "" else f"/raw/{serialize(dir)}/{serialize(page)}"
                 res.append(path)
         return res
 
