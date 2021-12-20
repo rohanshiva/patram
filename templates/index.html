@@ -6,31 +6,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@100;200;300;400;500;600;700&display=swap"
         rel="stylesheet">
-    {% block head %}
-    {% for tag in header_tags %}
-    <link rel="preload" href="{{tag}}" as="fetch">
-    {% endfor %}
-    {% endblock %}
 
 </head>
 
 <body>
-    <nav>
-        <h1>
-            {{title}}
-        </h1>
-        <div class="nav_links">
-            {% for link in nav_links %}
-            <a href="{{ nav_links[link] }}">
-                {{link}}
-            </a>
-            {% endfor %}
-        </div>
-    </nav>
     <div class="wrapper">
         <div class="sidebar" id="sidebar">
+            <div class="logo-wrapper">
+                {{ svg|safe }}
+                <div class="title">peaks</div>
+            </div>
             {% for dir in sidebar %}
-            <a class="key dir">{{ dir }}</a>
+            <div class="dir">{{ dir }}</div>
             {% for note in sidebar[dir] %}
             {% if key == note %}
             <a class="key selected" key="{{ note }}" dir="{{dir}}" name="link" onclick="switchNote(this)">{{ note
@@ -41,8 +28,10 @@
             {% endfor %}
             {% endfor %}
         </div>
-        <div class="content" id="note_content">
-            {{note|safe}}
+        <div class="content-wrapper">
+            <div class="content" id="note_content">
+                {{note|safe}}
+            </div>
         </div>
     </div>
 
@@ -60,17 +49,21 @@
         const serializedKey = words.join("-");
         return serializedKey;
     }
+
+    async function replaceNote(path) {
+        const res = await fetch(`/raw/${path}`);
+        const content = await res.json();
+        document.getElementById("note_content").innerHTML = content;
+        removeSelectedLinks();
+    }
+
     async function switchNote(link) {
         let key = link.getAttribute("key");
         let dir = link.getAttribute("dir");
         dir = serialize(dir);
         key = serialize(key);
         const path = dir === "" ? `${key}` : `${dir}/${key}`
-        const url = `/raw/${path}`
-        const res = await fetch(url);
-        const content = await res.json();
-        document.getElementById("note_content").innerHTML = content;
-        removeSelectedLinks();
+        await replaceNote(path)
         link.classList.add("selected");
         const pageUrl = `${location.origin}/${path}`
         const title = "Peaks";
@@ -78,11 +71,21 @@
         window.history.pushState(null, null, pageUrl);
     }
 
+    
+    window.addEventListener('popstate', (event) => {
+        // handle "/" case
+        replaceNote(document.location.pathname.substring(1));
+    });
 
 </script>
 <style>
-    html {
-        font-family: 'IBM Plex Mono', monospace;
+    body {
+        font-family: "Helvetica Neue", "Roboto Mono", "Arial", sans-serif;
+        font-weight: 400;
+        color: #2B2E4A;
+        overflow: hidden;
+        height: 100vh;
+        margin: 0;
     }
 
     nav {
@@ -101,39 +104,76 @@
     .wrapper {
         display: flex;
         flex-direction: row;
+        height: 100vh;
     }
 
     .sidebar {
         display: flex;
         flex-direction: column;
+        box-sizing: border-box;
         gap: 0.5rem;
-        width: 240px;
-        max-width: 240px;
-    }
-    .content {
-        height: calc(100vh - 45px);
-        width: 100%;
+        width: 250px;
+        max-width: 250px;
+        border-right: 1px solid #b0b2b9;
         overflow-y: scroll;
     }
-    a {
-        color: black;
-        text-decoration: none;
+
+    .content-wrapper {
+        display: flex;
+        justify-content: center;
+        overflow-y: scroll;
+        width: calc(100% - 250px);
     }
 
-    .key {
-        padding: 0.5rem;
-        font-size: 18px;
-        color: black;
+    .content {
+        padding: 2rem 1rem 3rem;
+        max-width: 48rem;
+        margin-left: 4rem;
+        margin-right: auto;
+    }
+
+    a {
+        color: #7C7D83;
         text-decoration: none;
+
+    }
+
+    a:hover {
+        cursor: pointer;
+        text-decoration: underline;
+        color: #676FB5;
+    }
+
+
+    .key {
+        padding: 0.5rem 1rem 0.5rem 1rem;
+        font-size: 0.875rem;
     }
 
     .dir {
-        font-size: 24px;
+        padding: 2rem 1rem 0.5rem 1rem;
+        font-size: 0.875rem;
+        font-weight: 700;
+        color: #2B2E4A;
     }
 
+    .logo-wrapper {
+        display: flex;
+        align-items: center;
+        padding: 3rem 1rem 0.5rem 1rem;
+    }
+
+    .title {
+        font-size: 2rem;
+        margin-left: 1rem;
+        margin-right: auto;
+        color: #2B2E4A;
+    }
 
     .selected {
-        color: blue;
+        color: #676FB5;
+        text-decoration: underline;
+        font-weight: 700;
     }
 </style>
 
