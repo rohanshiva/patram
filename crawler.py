@@ -58,9 +58,10 @@ class Crawler:
                 if entry.is_dir():
                     self.__crawl(entry.name)
                 else:
-                    self.__sidebar[deserialize(dir, type="DIR")].append(
-                        deserialize(entry.name)
-                    )
+                    if entry.name.endswith(".md"):
+                        self.__sidebar[deserialize(dir, type="DIR")].append(
+                            deserialize(entry.name)
+                        )
 
     def get_sidebar(self):
         return self.__sidebar
@@ -75,7 +76,11 @@ class Crawler:
         res = []
         for dir in self.__sidebar:
             for page in self.__sidebar[dir]:
-                path = f"/raw/{serialize(page)}" if dir == "" else f"/raw/{serialize(dir)}/{serialize(page)}"
+                path = (
+                    f"/raw/{serialize(page)}"
+                    if dir == ""
+                    else f"/raw/{serialize(dir)}/{serialize(page)}"
+                )
                 res.append(path)
         return res
 
