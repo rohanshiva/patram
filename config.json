@@ -1,0 +1,25 @@
+{
+    "title": "Peaks",
+    "nav_links": {
+        "Install": "https://deta.space/discovery/peaks",
+        "Docs": "/"
+    },
+    "autogenerate": true,
+    "sidebar": {
+        "": [
+            "Add",
+            "Getting Started",
+            "Intro",
+            "Readme"
+        ],
+        "Experimenting With Peaks": [
+            "Analysis",
+            "Sampling"
+        ],
+        "Use Cases": [
+            "My First Experiment",
+            "Personilaztion"
+        ]
+    },
+    "svg": "<svg width=\"30\" height=\"30\" viewBox=\"0 0 42 42\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"21\" cy=\"21\" r=\"20\" fill=\"#2B2E4A\"></circle><path d=\"M7.82332 18.121C6.45322 18.7437 4 31.8849 4 31.8849C4 31.8849 6.94531 36.7159 12.4395 39.1599C24.2773 44.4257 33 36.7159 33 36.7159C16.9627 35.2097 11.7872 16.3194 7.82332 18.121Z\" fill=\"#B84444\" fill-opacity=\"0.4\"></path><path d=\"M29.2361 10C25.3983 10 19.5972 37.0998 9 37.0998C9 37.0998 16.3842 42.5643 25.0085 40.5569C33.6328 38.5495 36.9585 32.5274 36.9585 32.5274C37.4751 31.5884 33.0738 10 29.2361 10Z\" fill=\"#B84444\" fill-opacity=\"0.8\"></path><circle cx=\"21\" cy=\"21\" r=\"20\" stroke=\"#2B2E4A\"></circle></svg>"
+}

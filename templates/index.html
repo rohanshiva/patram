@@ -1,173 +1,279 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>{{title}}</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
-      rel="stylesheet"
-    />
-  </head>
 
-  <body class="theme-light">
-    <div class="wrapper">
-      <div class="sidebar">
-        <div class="logo-wrapper">
-          {{ svg|safe }}
-          <div class="title">{{title}}</div>
-          <div class="menu-buttons">
-            <button class="open-button" id="open-button" onclick="openMenu()">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="feather feather-menu"
-              >
-                <line x1="3" y1="12" x2="21" y2="12"></line>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line>
-              </svg>
-            </button>
-            <button
-              class="close-button"
-              id="close-button"
-              onclick="closeMenu()"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="feather feather-x"
-              >
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-            </button>
-          </div>
-          <button class="theme-button" onclick="switchTheme()">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="feather feather-sun"
-            >
-              <circle cx="12" cy="12" r="5"></circle>
-              <line x1="12" y1="1" x2="12" y2="3"></line>
-              <line x1="12" y1="21" x2="12" y2="23"></line>
-              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-              <line x1="1" y1="12" x2="3" y2="12"></line>
-              <line x1="21" y1="12" x2="23" y2="12"></line>
-              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+<head>
+  <title>{{title}}</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
+</head>
+
+<body class="theme-light">
+  <div class="wrapper">
+    <div class="sidebar">
+      <div class="logo-wrapper">
+        {{ svg|safe }}
+        <div class="title">{{title}}</div>
+        <div class="menu-buttons">
+          <button class="open-button" id="open-button" onclick="openMenu()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="feather feather-menu">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+          <button class="close-button" id="close-button" onclick="closeMenu()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="feather feather-x">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
           </button>
         </div>
-
-        <div class="links visible" id="links">
-          {% for dir in sidebar %} {% if dir != "" %}
-          <div class="dir">{{ dir }}</div>
-          {% endif %} {% for note in sidebar[dir] %} {% if key == note %}
-          <a
-            class="key selected"
-            key="{{ note }}"
-            dir="{{dir}}"
-            name="link"
-            onclick="switchNote(this)"
-            >{{ note }}</a
-          >
-          {% else %}
-          <a
-            class="key"
-            key="{{ note }}"
-            dir="{{dir}}"
-            name="link"
-            onclick="switchNote(this)"
-            >{{ note }}</a
-          >
-          {% endif %} {% endfor %} {% endfor %}
-        </div>
+        <button class="theme-button" onclick="switchTheme()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="feather feather-sun">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
       </div>
-      <div class="content" role="main" id="content">{{note|safe}}</div>
+
+      <div class="links visible" id="links">
+        {% for dir in sidebar %} {% if dir != "" %}
+        <div class="dir">{{ dir }}</div>
+        {% endif %} {% for note in sidebar[dir] %} {% if key == note %}
+        <a class="key selected" key="{{ note }}" dir="{{dir}}" name="link" onclick="switchNote(this)">{{ note }}</a>
+        {% else %}
+        <a class="key" key="{{ note }}" dir="{{dir}}" name="link" onclick="switchNote(this)">{{ note }}</a>
+        {% endif %} {% endfor %} {% endfor %}
+      </div>
     </div>
-  </body>
-  <style>
-    :root {
-      --bg: white;
-      --primary: black;
-      --secondary: #7c7d80;
-      --accent: #51007c;
-      --content: black;
-      --highlight: #f8ecff;
-      --hover-highlight: #f4f4f6;
-      --code-bg: rgb(250, 250, 250);
-      --code-color: rgb(56, 58, 66);
-      --border-color: #d6d8dc;
+    <div class="content" role="main" id="content">{{note|safe}}</div>
+  </div>
+</body>
+<style>
+  :root {
+    --bg: white;
+    --primary: black;
+    --secondary: #7c7d80;
+    --accent: #51007c;
+    --content: black;
+    --highlight: #f8ecff;
+    --hover-highlight: #f4f4f6;
+    --code-bg: #FAF495;
+    --code-color: black;
+    --border-color: #d6d8dc;
+  }
+
+  [data-theme="dark"] {
+    --bg: #131415;
+    --primary: white;
+    --secondary: #b1b6be;
+    --accent: #f8ecff;
+    --content: white;
+    --highlight: #51007c;
+    --hover-highlight: #1d1b22;
+    --code-bg: rgb(40, 44, 52);
+    --code-color: rgb(171, 178, 191);
+    --border-color: #2c2f35;
+  }
+
+  body {
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    background-color: var(--bg);
+    color: var(--primary);
+    margin: 0;
+  }
+
+  code {
+    padding: 0.2rem;
+    color: var(--code-color);
+    background-color: var(--code-bg);
+    font-weight: 900;
+  }
+
+  .wrapper {
+    display: flex;
+    flex-direction: row;
+    max-height: 100vh;
+  }
+
+  .visible {
+    display: flex;
+  }
+
+  .tag {
+    font-weight: 700;
+    font-size: 25px;
+  }
+
+  .links {
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    max-height: 90vh;
+  }
+
+  a {
+    color: var(--secondary);
+    text-decoration: none;
+  }
+
+  .selected {
+    color: var(--accent);
+    text-decoration: underline;
+    font-weight: 600;
+  }
+
+  a:hover {
+    cursor: pointer;
+    background-color: var(--hover-highlight);
+  }
+
+  .key {
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  .dir {
+    padding: 2rem 1rem 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--content);
+  }
+
+  .logo-wrapper {
+    display: flex;
+    align-items: center;
+    height: 10vh;
+    max-height: 10vh;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .title {
+    font-size: 2rem;
+    margin-left: 1rem;
+    margin-right: auto;
+    color: var(--primary);
+  }
+
+  .sidebar {
+    min-width: 250px;
+    width: 250px;
+    border-right: 1px solid var(--secondary);
+    height: 100vh;
+  }
+
+  .menu-buttons {
+    display: none;
+  }
+
+  .open-button {
+    background-color: transparent;
+    color: var(--primary);
+    border: none;
+    outline: none;
+    cursor: pointer;
+    display: none;
+  }
+
+  .close-button {
+    background-color: transparent;
+    color: var(--primary);
+    border: none;
+    outline: none;
+    cursor: pointer;
+    display: none;
+  }
+
+  .theme-button {
+    background-color: transparent;
+    color: var(--primary);
+    border: none;
+    outline: none;
+    cursor: pointer;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1rem 2rem 1rem;
+    max-height: 100vh;
+    overflow-y: scroll;
+    color: var(--content);
+    width: 100%;
+  }
+
+  ::-webkit-scrollbar {
+    width: 0.25rem;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--accent);
+  }
+
+  @media only screen and (max-width: 620px) {
+    .sidebar {
+      max-width: 100vw;
+      width: auto;
+      border-right: none;
+      height: auto;
     }
 
-    [data-theme="dark"] {
-      --bg: #131415;
-      --primary: white;
-      --secondary: #b1b6be;
-      --accent: #f8ecff;
-      --content: white;
-      --highlight: #51007c;
-      --hover-highlight: #1d1b22;
-      --code-bg: rgb(40, 44, 52);
-      --code-color: rgb(171, 178, 191);
-      --border-color: #2c2f35;
-    }
-
-    body {
-      font-family: "Inter", sans-serif;
-      font-weight: 400;
-      background-color: var(--bg);
-      color: var(--primary);
-      margin: 0;
-    }
-
-    code {
-      padding: 0.2rem;
-      color: var(--code-color);
-      background-color: var(--code-bg);
+    .links {
+      overflow-y: scroll;
+      max-height: max-content;
+      height: max-content;
     }
 
     .wrapper {
+      flex-direction: column;
+    }
+
+    .content {
+      max-height: max-content;
+      overflow-y: unset;
+      padding: 2rem 1rem 2rem 1rem;
+      margin-bottom: 2rem;
+      min-width: auto;
+      width: auto;
+    }
+
+    .open-button {
       display: flex;
-      flex-direction: row;
-      max-height: 100vh;
+    }
+
+    .menu-buttons {
+      display: flex;
     }
 
     .visible {
-      display: flex;
+      display: none;
     }
+  }
 
-    .tag {
-      font-weight: 700;
-      font-size: 25px;
-    }
-
+  @media only screen and (min-width: 620px) {
     .links {
       display: flex;
       flex-direction: column;
@@ -175,223 +281,76 @@
       max-height: 90vh;
     }
 
-    a {
-      color: var(--secondary);
-      text-decoration: none;
-    }
-
-    .selected {
-      color: var(--accent);
-      background-color: var(--highlight);
-    }
-
-    a:hover {
-      cursor: pointer;
-      background-color: var(--hover-highlight);
-    }
-
-    .key {
-      padding: 0.5rem 1rem 0.5rem 1rem;
-      font-size: 0.875rem;
-    }
-
-    .dir {
-      padding: 2rem 1rem 0.5rem 1rem;
-      font-size: 0.875rem;
-      font-weight: 700;
-      color: var(--content);
-    }
-
-    .logo-wrapper {
-      display: flex;
-      align-items: center;
-      height: 10vh;
-      max-height: 10vh;
-      padding-left: 1rem;
-      padding-right: 1rem;
-    }
-
-    .title {
-      font-size: 2rem;
-      margin-left: 1rem;
-      margin-right: auto;
-      color: var(--primary);
-    }
-
-    .sidebar {
-      min-width: 250px;
-      width: 250px;
-      border-right: 1px solid var(--secondary);
-    }
-
     .menu-buttons {
       display: none;
     }
 
-    .open-button {
-      background-color: transparent;
-      color: var(--primary);
-      border: none;
-      outline: none;
-      cursor: pointer;
-      display: none;
-    }
-
-    .close-button {
-      background-color: transparent;
-      color: var(--primary);
-      border: none;
-      outline: none;
-      cursor: pointer;
-      display: none;
-    }
-
-    .theme-button {
-      background-color: transparent;
-      color: var(--primary);
-      border: none;
-      outline: none;
-      cursor: pointer;
-    }
-
-    .content {
+    .visible {
       display: flex;
-      flex-direction: column;
-      padding: 2rem 1rem 2rem 1rem;
-      max-height: 100vh;
-      overflow-y: scroll;
-      color: var(--content);
-      width: 100%;
     }
+  }
+</style>
+<script>
+  function openMenu() {
+    document.getElementById("open-button").style.display = "none";
+    document.getElementById("close-button").style.display = "block";
+    document.getElementById("links").classList.toggle("visible");
+  }
 
-    ::-webkit-scrollbar {
-      width: 0.25rem;
+  function closeMenu() {
+    document.getElementById("close-button").style.display = "none";
+    document.getElementById("open-button").style.display = "block";
+    document.getElementById("links").classList.toggle("visible");
+  }
+
+  function removeSelectedLinks() {
+    var elements = document.getElementsByName("link");
+    for (var i = 0; i < elements.length; i++) {
+      elements[i].classList.remove("selected");
     }
+  }
+  function serialize(key) {
+    let words = key.split(" ");
+    words = words.map(
+      (word) => word.charAt(0).toLowerCase() + word.substr(1)
+    );
+    const serializedKey = words.join("-");
+    return serializedKey;
+  }
 
-    ::-webkit-scrollbar-track {
-      background: transparent;
+  async function replaceNote(path) {
+    const res = await fetch(`/raw/${path}`);
+    const content = await res.json();
+    document.getElementById("content").innerHTML = content;
+    removeSelectedLinks();
+  }
+
+  async function switchNote(link) {
+    let key = link.getAttribute("key");
+    let dir = link.getAttribute("dir");
+    dir = serialize(dir);
+    key = serialize(key);
+    const path = dir === "" ? `${key}` : `${dir}/${key}`;
+    await replaceNote(path);
+    link.classList.add("selected");
+    const pageUrl = `${location.origin}/${path}`;
+    const title = "Peaks";
+    const state = {};
+    window.history.pushState(null, null, pageUrl);
+  }
+
+  function switchTheme() {
+    if (document.documentElement.getAttribute("data-theme") === "dark") {
+      document.documentElement.setAttribute("data-theme", "ligh");
+    } else {
+      document.documentElement.setAttribute("data-theme", "dark");
     }
+  }
 
-    ::-webkit-scrollbar-thumb {
-      background: var(--accent);
-    }
+  window.addEventListener("popstate", (event) => {
+    // handle "/" case
+    replaceNote(document.location.pathname.substring(1));
+  });
+</script>
 
-    @media only screen and (max-width: 620px) {
-      .sidebar {
-        max-width: 100vw;
-        width: auto;
-        border-right: none;
-      }
-
-      .links {
-        overflow-y: scroll;
-        max-height: max-content;
-        height: max-content;
-      }
-
-      .wrapper {
-        flex-direction: column;
-      }
-
-      .content {
-        max-height: max-content;
-        overflow-y: unset;
-        padding: 2rem 1rem 2rem 1rem;
-        margin-bottom: 2rem;
-        min-width: auto;
-        width: auto;
-      }
-
-      .open-button {
-        display: flex;
-      }
-
-      .menu-buttons {
-        display: flex;
-      }
-
-      .visible {
-        display: none;
-      }
-    }
-
-    @media only screen and (min-width: 620px) {
-      .links {
-        display: flex;
-        flex-direction: column;
-        overflow-y: scroll;
-        max-height: 90vh;
-      }
-
-      .menu-buttons {
-        display: none;
-      }
-
-      .visible {
-        display: flex;
-      }
-    }
-  </style>
-  <script>
-    function openMenu() {
-      document.getElementById("open-button").style.display = "none";
-      document.getElementById("close-button").style.display = "block";
-      document.getElementById("links").classList.toggle("visible");
-    }
-
-    function closeMenu() {
-      document.getElementById("close-button").style.display = "none";
-      document.getElementById("open-button").style.display = "block";
-      document.getElementById("links").classList.toggle("visible");
-    }
-
-    function removeSelectedLinks() {
-      var elements = document.getElementsByName("link");
-      for (var i = 0; i < elements.length; i++) {
-        elements[i].classList.remove("selected");
-      }
-    }
-    function serialize(key) {
-      let words = key.split(" ");
-      words = words.map(
-        (word) => word.charAt(0).toLowerCase() + word.substr(1)
-      );
-      const serializedKey = words.join("-");
-      return serializedKey;
-    }
-
-    async function replaceNote(path) {
-      const res = await fetch(`/raw/${path}`);
-      const content = await res.json();
-      document.getElementById("content").innerHTML = content;
-      removeSelectedLinks();
-    }
-
-    async function switchNote(link) {
-      let key = link.getAttribute("key");
-      let dir = link.getAttribute("dir");
-      dir = serialize(dir);
-      key = serialize(key);
-      const path = dir === "" ? `${key}` : `${dir}/${key}`;
-      await replaceNote(path);
-      link.classList.add("selected");
-      const pageUrl = `${location.origin}/${path}`;
-      const title = "Peaks";
-      const state = {};
-      window.history.pushState(null, null, pageUrl);
-    }
-
-    function switchTheme() {
-      if (document.documentElement.getAttribute("data-theme") === "dark") {
-        document.documentElement.setAttribute("data-theme", "ligh");
-      } else {
-        document.documentElement.setAttribute("data-theme", "dark");
-      }
-    }
-
-    window.addEventListener("popstate", (event) => {
-      // handle "/" case
-      replaceNote(document.location.pathname.substring(1));
-    });
-  </script>
 </html>

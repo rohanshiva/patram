@@ -7,3 +7,4 @@ python-dotenv
 aiofiles
 python-multipart
 lxml
+python-frontmatter==1.0.0
