@@ -6,13 +6,8 @@
     },
     "autogenerate": true,
     "sidebar": {
-        "": [
-            "Add",
-            "Getting Started",
-            "Intro",
-            "Readme"
-        ],
-        "Experimenting With Peaks": [
+        "1": 1,
+        "2": [
             "Analysis",
             "Sampling"
         ],

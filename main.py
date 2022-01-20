@@ -12,7 +12,7 @@ templates = Jinja2Templates(directory="templates")
 async def handle_render(request: Request, page = None):
     crawler = Crawler()
     await crawler.setup()
-    path = f"/{page}" if page else None
+    path = f"{page}" if page else None
     data = crawler.get_template_data(path)
     data["request"] = request
     return templates.TemplateResponse("index.html", data)
@@ -37,6 +37,7 @@ async def raw_page(request: Request, dir: str, page: str):
     crawler = Crawler()
     await crawler.setup()
     path = f"{dir}/{page}"
+    print(path)
     data = crawler.page_content(path)
     return data
 
@@ -52,4 +53,5 @@ async def render_page(request: Request, page: str):
 @app.get("/{dir}/{page}")
 async def render_page(request: Request, dir: str, page: str):
     path = f"{dir}/{page}"
+    print(path)
     return await handle_render(request, path)

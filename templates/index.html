@@ -56,10 +56,10 @@
       <div class="links visible" id="links">
         {% for dir in sidebar %} {% if dir != "" %}
         <div class="dir">{{ dir }}</div>
-        {% endif %} {% for note in sidebar[dir] %} {% if key == note %}
-        <a class="key selected" key="{{ note }}" dir="{{dir}}" name="link" onclick="switchNote(this)">{{ note }}</a>
+        {% endif %} {% for note in sidebar[dir] %} {% if key == note[1]['filename'] %}
+        <a class="key selected" key="{{ note[1]['filename'] }}" dir="{{dir}}" name="link" onclick="switchNote(this)">{{ note[1]['name'] }}</a>
         {% else %}
-        <a class="key" key="{{ note }}" dir="{{dir}}" name="link" onclick="switchNote(this)">{{ note }}</a>
+        <a class="key" key="{{ note[1]['filename'] }}" dir="{{dir}}" name="link" onclick="switchNote(this)">{{ note[1]['name'] }}</a>
         {% endif %} {% endfor %} {% endfor %}
       </div>
     </div>

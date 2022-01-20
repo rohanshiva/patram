@@ -5,6 +5,7 @@ import heapq
 import markdown
 from collections import defaultdict
 import frontmatter
+
 PAGES_DIR = "./blobs"
 
 
@@ -16,20 +17,21 @@ def parse_path(path):
     return dir_name, file_name
 
 
+def parse_filename(name):
+    if name.endswith(".md"):
+        return name[:-3]
+
+
 class Crawler():
     def __init__(self):
         self.root = defaultdict(lambda: {})
         self.sidebar = defaultdict(lambda: [])
 
     async def setup(self):
-        res = defaultdict(lambda: [])
         await self.build()
         # rearrange sidebar according to priority using a priority queue
         for folder in self.sidebar:
             heapq.heapify(self.sidebar[folder])
-            for i in range(len(self.sidebar[folder])):
-                res[folder].append(heapq.heappop(self.sidebar[folder])[1])
-        self.sidebar = res
 
     def read_page(self, dir, file_name):
         path = f"{PAGES_DIR}/{dir}/{file_name}"
@@ -41,7 +43,7 @@ class Crawler():
             return res
         else:
             return None
-    
+
     def get_logo(self):
         f = open("logo.svg", "r")
         res = f.read()
@@ -64,8 +66,9 @@ class Crawler():
                         continue
 
                     self.sidebar[str(res["parent"])].append(
-                        (int(res["position"]), str(res["name"])))
-                    self.root[str(res["parent"])][str(res["name"])] = res
+                        (int(res["position"]), {"name": str(res["name"]), "filename": parse_filename(entry.name)}))
+                    self.root[str(res["parent"])
+                              ][parse_filename(entry.name)] = res
 
     def page_content(self, path):
         dir_name, file_name = parse_path(path)
@@ -79,17 +82,15 @@ class Crawler():
         if not path:
             # on / route renders the first page
             dir_name = list(self.sidebar.keys())[0]
-            file_name = self.sidebar[dir_name][0]
+            file_name = self.sidebar[dir_name][0][1]["filename"]
         else:
             dir_name, file_name = parse_path(path)
-
         if not self.root.get(dir_name) or not self.root.get(dir_name).get(file_name):
             return None
-
         blob = self.root.get(dir_name).get(file_name)
         res = {
             "title": "Peaks",
-            "key": blob["name"],
+            "key": file_name,
             "sidebar": self.sidebar,
             "note": markdown.markdown(blob["content"]),
             "path": path,
