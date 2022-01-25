@@ -55,15 +55,17 @@
 
       <div class="links visible" id="links">
         {% for dir in sidebar %} {% if dir != "" %}
-        <div class="dir">{{ dir }}</div>
-        {% endif %} {% for note in sidebar[dir] %} {% if key == note[1]['filename'] %}
-        <a class="key selected" key="{{ note[1]['filename'] }}" dir="{{dir}}" name="link" onclick="switchNote(this)">{{ note[1]['name'] }}</a>
+        <div class="dir">{{ sidebar[dir]['name'] }}</div>
+        {% endif %} {% for note in sidebar[dir]["children"] %} {% if current_dir == dir and current_filename == note %}
+        <a class="key selected" key="{{ note }}" dir="{{dir}}" name="link" onclick="switchNote(this)">{{
+          sidebar[dir]['children'][note]['name'] }}</a>
         {% else %}
-        <a class="key" key="{{ note[1]['filename'] }}" dir="{{dir}}" name="link" onclick="switchNote(this)">{{ note[1]['name'] }}</a>
+        <a class="key" key="{{ note }}" dir="{{dir}}" name="link" onclick="switchNote(this)">{{
+          sidebar[dir]['children'][note]['name'] }}</a>
         {% endif %} {% endfor %} {% endfor %}
       </div>
     </div>
-    <div class="content" role="main" id="content">{{note|safe}}</div>
+    <div class="content" role="main" id="content">{{content|safe}}</div>
   </div>
 </body>
 <style>
@@ -71,11 +73,10 @@
     --bg: white;
     --primary: black;
     --secondary: #7c7d80;
-    --accent: #51007c;
+    --accent: #0068ff;
     --content: black;
-    --highlight: #f8ecff;
     --hover-highlight: #f4f4f6;
-    --code-bg: #FAF495;
+    --code-bg: #f6f8fa;
     --code-color: black;
     --border-color: #d6d8dc;
   }
@@ -84,12 +85,11 @@
     --bg: #131415;
     --primary: white;
     --secondary: #b1b6be;
-    --accent: #f8ecff;
+    --accent: #ff7c7c;
     --content: white;
-    --highlight: #51007c;
-    --hover-highlight: #1d1b22;
-    --code-bg: rgb(40, 44, 52);
-    --code-color: rgb(171, 178, 191);
+    --hover-highlight: #ff7c7c38;
+    --code-bg: #292d3e;
+    --code-color: white;
     --border-color: #2c2f35;
   }
 
@@ -143,6 +143,7 @@
 
   a:hover {
     cursor: pointer;
+    color: var(--content);
     background-color: var(--hover-highlight);
   }
 
@@ -328,6 +329,7 @@
   async function switchNote(link) {
     let key = link.getAttribute("key");
     let dir = link.getAttribute("dir");
+    let priority = link.getAttribute("priority");
     dir = serialize(dir);
     key = serialize(key);
     const path = dir === "" ? `${key}` : `${dir}/${key}`;
