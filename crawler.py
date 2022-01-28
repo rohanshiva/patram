@@ -10,7 +10,7 @@ def get_filename(entry_name):
 
 def serialize(entry_name, folder=False):
     if entry_name == "":
-        return {"priority": 0, "name": "", "raw": ""}
+        return {"position": 0, "name": "", "raw": ""}
 
     parts = entry_name.split("-")
 
@@ -21,7 +21,7 @@ def serialize(entry_name, folder=False):
         name = get_filename(name)
         raw_name = get_filename(raw_name)
 
-    return {"priority": int(parts[0]), "name": name, "raw": raw_name}
+    return {"position": int(parts[0]), "name": name, "raw": raw_name}
 
 
 def deserialize(entry_name, folder=False):
@@ -42,9 +42,9 @@ class Crawler:
         Sample Sidebar
         {
             "folder-one": {
-                "priority": 1,
+                "position": 1,
                 "name": "Folder One",
-                "children": { "doc-one": { "priority": 1, "name": "Doc One" } }
+                "children": { "doc-one": { "position": 1, "name": "Doc One" } }
             }
         }
         """
@@ -52,18 +52,18 @@ class Crawler:
 
     async def setup(self):
         await self.build()
-        # rearrange sidebar according to priority
+        # rearrange sidebar according to position
         await self.sort_sidebar()
 
     async def sort_sidebar(self):
         self.sidebar = dict(
-            sorted(self.sidebar.items(), key=lambda dir: dir[1]["priority"])
+            sorted(self.sidebar.items(), key=lambda dir: dir[1]["position"])
         )
         for dir in self.sidebar:
             self.sidebar[dir]["children"] = dict(
                 sorted(
                     self.sidebar[dir]["children"].items(),
-                    key=lambda file: file[1]["priority"],
+                    key=lambda file: file[1]["position"],
                 )
             )
 
@@ -86,13 +86,13 @@ class Crawler:
         if dir == "" and self.sidebar.get(dir):
             res.append("")
         elif self.sidebar.get(dir):
-            res.append(f"{self.sidebar[dir]['priority']}-{dir}")
+            res.append(f"{self.sidebar[dir]['position']}-{dir}")
         else:
             raise Exception("Folder not found.")
 
         if self.sidebar[dir]["children"].get(filename):
             res.append(
-                f"{self.sidebar[dir]['children'][filename]['priority']}-{filename}"
+                f"{self.sidebar[dir]['children'][filename]['position']}-{filename}"
             )
         else:
             raise Exception("File not found in the directory.")
@@ -122,16 +122,16 @@ class Crawler:
                         self.sidebar[serialized_dir["raw"]]["children"][
                             serialized_file["raw"]
                         ] = {
-                            "priority": serialized_file["priority"],
+                            "position": serialized_file["position"],
                             "name": serialized_file["name"],
                         }
                     else:
                         self.sidebar[serialized_dir["raw"]] = {
-                            "priority": serialized_dir["priority"],
+                            "position": serialized_dir["position"],
                             "name": serialized_dir["name"],
                             "children": {
                                 serialized_file["raw"]: {
-                                    "priority": serialized_file["priority"],
+                                    "position": serialized_file["position"],
                                     "name": serialized_file["name"],
                                 }
                             },

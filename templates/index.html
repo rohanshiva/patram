@@ -329,7 +329,6 @@
   async function switchNote(link) {
     let key = link.getAttribute("key");
     let dir = link.getAttribute("dir");
-    let priority = link.getAttribute("priority");
     dir = serialize(dir);
     key = serialize(key);
     const path = dir === "" ? `${key}` : `${dir}/${key}`;
@@ -343,7 +342,7 @@
 
   function switchTheme() {
     if (document.documentElement.getAttribute("data-theme") === "dark") {
-      document.documentElement.setAttribute("data-theme", "ligh");
+      document.documentElement.setAttribute("data-theme", "light");
     } else {
       document.documentElement.setAttribute("data-theme", "dark");
     }
