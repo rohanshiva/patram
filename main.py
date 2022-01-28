@@ -13,7 +13,6 @@ async def handle_render(request: Request, page=None):
     crawler = Crawler()
     await crawler.setup()
     path = f"{page}" if page else None
-
     try:
         data = crawler.get_template_data(path)
         data["request"] = request

@@ -1,5 +1,8 @@
 import os
 import markdown
+import frontmatter
+from config import get_parent_position
+
 
 PAGES_DIR = "./pages"
 
@@ -8,46 +11,8 @@ def get_filename(entry_name):
     return entry_name[:-3]
 
 
-def serialize(entry_name, folder=False):
-    if entry_name == "":
-        return {"priority": 0, "name": "", "raw": ""}
-
-    parts = entry_name.split("-")
-
-    name = " ".join(map(lambda word: word[0].upper() + word[1:], parts[1:]))
-    name = name
-    raw_name = "-".join(parts[1:])
-    if not folder:
-        name = get_filename(name)
-        raw_name = get_filename(raw_name)
-
-    return {"priority": int(parts[0]), "name": name, "raw": raw_name}
-
-
-def deserialize(entry_name, folder=False):
-    parts = entry_name.split(" ")
-    if entry_name == "":
-        return ""
-
-    res = "-".join(map(lambda word: word[0].lower() + word[1:], parts))
-    if folder:
-        return res
-    else:
-        return f"{res}.md"
-
-
 class Crawler:
     def __init__(self):
-        """
-        Sample Sidebar
-        {
-            "folder-one": {
-                "priority": 1,
-                "name": "Folder One",
-                "children": { "doc-one": { "priority": 1, "name": "Doc One" } }
-            }
-        }
-        """
         self.sidebar = {}
 
     async def setup(self):
@@ -57,22 +22,23 @@ class Crawler:
 
     async def sort_sidebar(self):
         self.sidebar = dict(
-            sorted(self.sidebar.items(), key=lambda dir: dir[1]["priority"])
+            sorted(self.sidebar.items(), key=lambda dir: dir[1]["position"])
         )
         for dir in self.sidebar:
             self.sidebar[dir]["children"] = dict(
                 sorted(
                     self.sidebar[dir]["children"].items(),
-                    key=lambda file: file[1]["priority"],
+                    key=lambda file: file[1]["position"],
                 )
             )
 
-    def read_page(self, path):
+    async def read_page(self, path):
         if os.path.exists(path):
-            f = open(path)
-            raw_content = f.read()
-            f.close()
-            return markdown.markdown(raw_content)
+            post = frontmatter.load(path)
+            res = {"content": markdown.markdown(post.content)}
+            for key in post.keys():
+                res[key] = post[key]
+            return res
         else:
             return None
 
@@ -81,23 +47,17 @@ class Crawler:
             dir, filename = path.split("/")
         else:
             dir, filename = "", path
+        return dir, filename
 
-        res = []
-        if dir == "" and self.sidebar.get(dir):
-            res.append("")
-        elif self.sidebar.get(dir):
-            res.append(f"{self.sidebar[dir]['priority']}-{dir}")
-        else:
+    def page_content(self, path):
+        dir, filename = self.parse_path(path)
+        if not self.sidebar.get(dir):
             raise Exception("Folder not found.")
 
         if self.sidebar[dir]["children"].get(filename):
-            res.append(
-                f"{self.sidebar[dir]['children'][filename]['priority']}-{filename}"
-            )
+            return self.sidebar[dir]["children"][filename]["content"]
         else:
-            raise Exception("File not found in the directory.")
-
-        return res
+            raise Exception("File not found.")
 
     def get_logo(self):
         f = open("logo.svg", "r")
@@ -111,51 +71,46 @@ class Crawler:
                 if entry.is_dir():
                     await self.build(entry.name)
                 else:
-
                     if not entry.name.endswith(".md"):
                         continue
+                    filename = get_filename(entry.name)
+                    page = await self.read_page(f"{PAGES_DIR}/{dir}/{entry.name}")
+                    if not page:
+                        continue
 
-                    serialized_dir = serialize(dir, folder=True)
-                    serialized_file = serialize(entry.name)
+                    id, title, parent, position = (
+                        page.get("id"),
+                        page.get("title"),
+                        page.get("parent"),
+                        page.get("position"),
+                    )
 
-                    if self.sidebar.get(serialized_dir["raw"]):
-                        self.sidebar[serialized_dir["raw"]]["children"][
-                            serialized_file["raw"]
-                        ] = {
-                            "priority": serialized_file["priority"],
-                            "name": serialized_file["name"],
-                        }
+                    if (
+                        id == None
+                        or title == None
+                        or parent == None
+                        or position == None
+                    ):
+                        continue
+
+                    page["dir"] = dir
+                    page["filename"] = filename
+
+                    if self.sidebar.get(str(parent)):
+                        self.sidebar[str(parent)]["children"][id] = page
                     else:
-                        self.sidebar[serialized_dir["raw"]] = {
-                            "priority": serialized_dir["priority"],
-                            "name": serialized_dir["name"],
-                            "children": {
-                                serialized_file["raw"]: {
-                                    "priority": serialized_file["priority"],
-                                    "name": serialized_file["name"],
-                                }
-                            },
+                        dir_position = get_parent_position(
+                            str(parent), len(self.sidebar)
+                        )
+                        self.sidebar[str(parent)] = {
+                            "position": dir_position,
+                            "children": {id: page},
+                            "title": parent,
                         }
-
-    def page_content(self, path):
-
-        try:
-            dir, filename = self.parse_path(path)
-        except Exception as e:
-            raise Exception(str(e))
-
-        path = f"{PAGES_DIR}/{dir}/{filename}.md"
-
-        content = self.read_page(path)
-
-        if content:
-            return content
-        else:
-            raise Exception("File not found.")
 
     def get_template_data(self, path=None):
         if not path:
-            # on / route renders the first page
+            # on route / renders the first page
             dir = list(self.sidebar.keys())[0]
             filename = list(self.sidebar[dir]["children"].keys())[0]
             path = f"{dir}/{filename}"
@@ -165,15 +120,13 @@ class Crawler:
         except Exception as e:
             raise Exception(str(e))
 
-        dir, filename = path.split("/")
+        dir, filename = self.parse_path(path)
         res = {
             "title": "Patram",
             "current_dir": dir,
             "current_filename": filename,
             "sidebar": self.sidebar,
             "content": content,
-            "path": "/raw/raw.md",
             "svg": self.get_logo(),
         }
-
         return res

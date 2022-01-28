@@ -1,4 +1,4 @@
-# Patram 
+# 📃 Patram 
 yadt (yet another docs tool)
 Simple small customizable docs platform that is seo optimized and does not require a build step. Simply add new pages to `pages/` with the following format:
 
