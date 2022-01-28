@@ -165,14 +165,16 @@ class Crawler:
         except Exception as e:
             raise Exception(str(e))
 
-        dir, filename = path.split("/")
+        dir, filename = "", path
+        if "/" in path:
+            dir, filename = path.split("/")
+
         res = {
             "title": "Patram",
             "current_dir": dir,
             "current_filename": filename,
             "sidebar": self.sidebar,
             "content": content,
-            "path": "/raw/raw.md",
             "svg": self.get_logo(),
         }
 
