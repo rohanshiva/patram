@@ -1,0 +1,27 @@
+{
+  "": {
+    "position": 0,
+    "name": "",
+    "children": {
+      "readme": { "position": 0, "name": "Readme" },
+      "about": { "position": 2, "name": "About" }
+    }
+  },
+  "intro": {
+    "position": 1,
+    "name": "Intro",
+    "children": {
+      "getting-started": { "position": 0, "name": "Getting Started" },
+      "set-up": { "position": 1, "name": "Set Up" },
+      "run": { "position": 2, "name": "Run" }
+    }
+  },
+  "advanced-tutorials": {
+    "position": 2,
+    "name": "Advanced Tutorials",
+    "children": {
+      "micro": { "position": 2, "name": "Micro" },
+      "cron": { "position": 3, "name": "Cron" }
+    }
+  }
+}

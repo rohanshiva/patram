@@ -20,8 +20,10 @@ def serialize(entry_name, folder=False):
     if not folder:
         name = get_filename(name)
         raw_name = get_filename(raw_name)
-
-    return {"position": int(parts[0]), "name": name, "raw": raw_name}
+    try:
+        return {"position": int(parts[0].strip()), "name": name, "raw": raw_name}
+    except BaseException as e:
+        pass
 
 
 def deserialize(entry_name, folder=False):
