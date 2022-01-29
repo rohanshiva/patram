@@ -35,11 +35,6 @@ async def handle_raw_request(request: Request, page=None):
     return data
 
 
-@app.get("/favicon.ico")
-def render_svg():
-    f = open("logo.svg", "r")
-    svg = f.read()
-    return svg
 
 
 @app.get("/raw/{page}")

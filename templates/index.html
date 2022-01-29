@@ -292,6 +292,8 @@
   }
 </style>
 <script>
+  const sidebar = {{sidebar | tojson}}
+
   function openMenu() {
     document.getElementById("open-button").style.display = "none";
     document.getElementById("close-button").style.display = "block";
@@ -319,21 +321,22 @@
     return serializedKey;
   }
 
-  async function replaceNote(path) {
-    const res = await fetch(`/raw/${path}`);
-    const content = await res.json();
+  function replaceNote(dir, key) {
+    console.log(dir, key);
+    const content = sidebar[dir]["children"][key]["content"];
     document.getElementById("content").innerHTML = content;
     removeSelectedLinks();
+
   }
 
-  async function switchNote(link) {
+  function switchNote(link) {
     let key = link.getAttribute("key");
     let dir = link.getAttribute("dir");
     let priority = link.getAttribute("priority");
     dir = serialize(dir);
     key = serialize(key);
     const path = dir === "" ? `${key}` : `${dir}/${key}`;
-    await replaceNote(path);
+    replaceNote(dir, key);
     link.classList.add("selected");
     const pageUrl = `${location.origin}/${path}`;
     const title = "Peaks";

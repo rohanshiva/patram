@@ -1,8 +1,7 @@
 import os
-import markdown
 import frontmatter
 from config import get_parent_position
-
+import mistune
 
 PAGES_DIR = "./pages"
 
@@ -35,7 +34,7 @@ class Crawler:
     async def read_page(self, path):
         if os.path.exists(path):
             post = frontmatter.load(path)
-            res = {"content": markdown.markdown(post.content)}
+            res = {"content": mistune.html(post.content)}
             for key in post.keys():
                 res[key] = post[key]
             return res
