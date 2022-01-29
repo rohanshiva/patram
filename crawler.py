@@ -1,5 +1,5 @@
 import os
-import markdown
+import mistune
 
 PAGES_DIR = "./pages"
 
@@ -74,7 +74,7 @@ class Crawler:
             f = open(path)
             raw_content = f.read()
             f.close()
-            return markdown.markdown(raw_content)
+            return mistune.html(raw_content)
         else:
             return None
 
