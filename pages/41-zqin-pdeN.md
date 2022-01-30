@@ -16,9 +16,9 @@ pip install virtualenv
 ```
 
 Create a new virtualenv and install the packages listed in requirements.txt
-```
-virtualenv venv
-pip install -r requirements.txt
+```py
+def rohna():
+    print("hellp")
 ```
 
 Before running the tests, we have to locally install the package gitgame (./server/gitgame) into our virtualenv. This is the package which contains the
