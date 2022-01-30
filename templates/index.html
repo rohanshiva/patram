@@ -327,19 +327,19 @@
     return serializedKey;
   }
 
-  function replaceNote(dir, key) {
-    const content = sidebar[dir]["children"][key]["content"];
+  async function replaceNote(path) {
+    const res = await fetch(`/raw/${path}`);
+    const content = await res.json();
     document.getElementById("content").innerHTML = content;
     removeSelectedLinks();
-
   }
 
-  function switchNote(link) {
+  async function switchNote(link) {
     let key = link.getAttribute("key");
     let dir = link.getAttribute("dir");
     let priority = link.getAttribute("priority");
     const path = dir === "" ? `${key}` : `${dir}/${key}`;
-    replaceNote(dir, key);
+    await replaceNote(path);
     link.classList.add("selected");
     const pageUrl = `${location.origin}/${path}`;
     const title = "Peaks";

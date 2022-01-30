@@ -1,6 +1,7 @@
 import os
 from highlight_renderer import markdown
 import frontmatter
+import urllib
 from config import get_parent_position
 
 PAGES_DIR = "./pages"
@@ -19,6 +20,7 @@ class Crawler:
         # rearrange sidebar according to priority
         await self.sort_sidebar()
         print(self.sidebar)
+
     async def sort_sidebar(self):
         self.sidebar = dict(
             sorted(self.sidebar.items(), key=lambda dir: dir[1]["position"])
@@ -31,30 +33,46 @@ class Crawler:
                 )
             )
 
+    def read_page_content(self, path):
+        path = f"{PAGES_DIR}/{path}.md"
+        if os.path.exists(path):
+            post = frontmatter.load(path)
+            return markdown(post.content)
+        else:
+            return None
+
     async def read_page(self, path):
         if os.path.exists(path):
             post = frontmatter.load(path)
-            res = {"content": markdown(post.content)}
+            res = {}
             for key in post.keys():
                 res[key] = post[key]
             return res
         else:
             return None
 
-    def parse_path(self, path):
+    def parse_path(self, path, encoded=True):
         if "/" in path:
             dir, filename = path.split("/")
+            if encoded:
+                dir = urllib.parse.quote(dir)
         else:
             dir, filename = "", path
+
         return dir, filename
 
-    def page_content(self, path):
-        dir, filename = self.parse_path(path)
-        if not self.sidebar.get(dir):
+    def page_content(self, path, encoded=True):
+        parent, child = self.parse_path(path, encoded)
+
+        if not self.sidebar.get(parent):
+
             raise Exception("Folder not found.")
 
-        if self.sidebar[dir]["children"].get(filename):
-            return self.sidebar[dir]["children"][filename]["content"]
+        if self.sidebar[parent]["children"].get(child):
+            dir = self.sidebar[parent]["children"][child]["dir"]
+            filename = self.sidebar[parent]["children"][child]["filename"]
+            path = f"{dir}/{filename}"
+            return self.read_page_content(path)
         else:
             raise Exception("File not found.")
 
@@ -112,22 +130,24 @@ class Crawler:
         if not path:
             # on route / renders the first page
             if len(self.sidebar) != 0:
-                dir = list(self.sidebar.keys())[0]
-                filename = list(self.sidebar[dir]["children"].keys())[0]
-                path = f"{dir}/{filename}"
+                parent = list(self.sidebar.keys())[0]
+                child = list(self.sidebar[parent]["children"].keys())[0]
             else:
                 raise Exception(f"No files found in {PAGES_DIR}")
+        else:
+            parent, child = self.parse_path(path)
+
+        path = f"{parent}/{child}"
 
         try:
-            content = self.page_content(path)
+            content = self.page_content(path, False)
         except Exception as e:
             raise Exception(str(e))
 
-        dir, filename = self.parse_path(path)
         res = {
             "title": "Patram",
-            "current_dir": dir,
-            "current_filename": filename,
+            "current_dir": parent,
+            "current_filename": child,
             "sidebar": self.sidebar,
             "content": content,
             "svg": self.get_logo(),

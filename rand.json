@@ -1,62 +1,58 @@
 {
-  "": {
-    "position": 0,
-    "children": {
-      "patram-about": {
-        "content": "<h1>About patram</h1>\n",
-        "position": 1,
-        "title": "About Patram",
-        "parent": "",
-        "id": "patram-about",
-        "dir": "",
-        "filename": "about"
-      }
+    "":{
+       "position":0,
+       "children":{
+          "patram-about":{
+             "position":1,
+             "title":"About Patram",
+             "parent":"",
+             "id":"patram-about",
+             "dir":"",
+             "filename":"about"
+          }
+       },
+       "title":""
     },
-    "title": ""
-  },
-  "one": {
-    "position": 1,
-    "children": {
-      "patram-readme": {
-        "content": "<h1>patram Readme</h1>\n",
-        "position": 2,
-        "title": "Readme about patram",
-        "parent": 1,
-        "id": "patram-readme",
-        "dir": "",
-        "filename": "readme"
-      }
+    "one":{
+       "position":1,
+       "children":{
+          "patram-readme":{
+             "position":2,
+             "title":"Readme about patram",
+             "parent":1,
+             "id":"patram-readme",
+             "dir":"",
+             "filename":"readme"
+          }
+       },
+       "title":1
     },
-    "title": 1
-  },
-  "easy-stuff": {
-    "position": 2,
-    "children": {
-      "getting-started": {
-        "content": "<h1>Getting Started</h1>\n",
-        "position": 1,
-        "title": "This is Awesome",
-        "parent": "Easy Stuff",
-        "id": "getting-started",
-        "dir": "",
-        "filename": "getting-started"
-      }
+    "easy-stuff":{
+       "position":2,
+       "children":{
+          "getting-started":{
+             "position":1,
+             "title":"This is Awesome",
+             "parent":"Easy Stuff",
+             "id":"getting-started",
+             "dir":"",
+             "filename":"getting-started"
+          }
+       },
+       "title":"Easy Stuff"
     },
-    "title": "Easy Stuff"
-  },
-  "Advanced%20Guide": {
-    "position": 2,
-    "children": {
-      "micro-tutorial-yes": {
-        "content": "<h1>This is a Micro Tutorial</h1>\n",
-        "position": 2,
-        "title": "This is a Micro Tutorial",
-        "parent": "Advanced Guide",
-        "id": "micro-tutorial-yes",
-        "dir": "",
-        "filename": "microtutorials"
-      }
-    },
-    "title": "Advanced Guide"
-  }
-}
+    "Advanced%20Guide":{
+       "position":2,
+       "children":{
+          "micro-tutorial-yes":{
+             "position":2,
+             "title":"This is a Micro Tutorial",
+             "parent":"Advanced Guide",
+             "id":"micro-tutorial-yes",
+             "dir":"",
+             "filename":"microtutorials"
+          }
+       },
+       "title":"Advanced Guide"
+    }
+ }
