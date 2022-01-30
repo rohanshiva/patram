@@ -106,6 +106,12 @@
     color: var(--code-color);
     background-color: var(--code-bg);
     font-weight: 900;
+    width: 98%;
+  }
+  
+  .highlight {
+    background-color: var(--code-bg);
+    padding: 0em 1em;
   }
 
   .wrapper {
@@ -322,7 +328,6 @@
   }
 
   function replaceNote(dir, key) {
-    console.log(dir, key);
     const content = sidebar[dir]["children"][key]["content"];
     document.getElementById("content").innerHTML = content;
     removeSelectedLinks();
@@ -333,8 +338,6 @@
     let key = link.getAttribute("key");
     let dir = link.getAttribute("dir");
     let priority = link.getAttribute("priority");
-    dir = serialize(dir);
-    key = serialize(key);
     const path = dir === "" ? `${key}` : `${dir}/${key}`;
     replaceNote(dir, key);
     link.classList.add("selected");

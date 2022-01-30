@@ -1,7 +1,7 @@
 import os
+from highlight_renderer import markdown
 import frontmatter
 from config import get_parent_position
-import mistune
 
 PAGES_DIR = "./pages"
 
@@ -18,7 +18,7 @@ class Crawler:
         await self.build()
         # rearrange sidebar according to priority
         await self.sort_sidebar()
-
+        print(self.sidebar)
     async def sort_sidebar(self):
         self.sidebar = dict(
             sorted(self.sidebar.items(), key=lambda dir: dir[1]["position"])
@@ -34,7 +34,7 @@ class Crawler:
     async def read_page(self, path):
         if os.path.exists(path):
             post = frontmatter.load(path)
-            res = {"content": mistune.html(post.content)}
+            res = {"content": markdown(post.content)}
             for key in post.keys():
                 res[key] = post[key]
             return res
@@ -67,6 +67,7 @@ class Crawler:
     async def build(self, dir=""):
         with os.scandir(f"{PAGES_DIR}/{dir}") as entries:
             for entry in entries:
+
                 if entry.is_dir():
                     await self.build(entry.name)
                 else:
@@ -94,15 +95,15 @@ class Crawler:
 
                     page["dir"] = dir
                     page["filename"] = filename
+                    serialized_parent = get_parent_position(
+                        str(parent), len(self.sidebar)
+                    )
 
-                    if self.sidebar.get(str(parent)):
-                        self.sidebar[str(parent)]["children"][id] = page
+                    if self.sidebar.get(serialized_parent["id"]):
+                        self.sidebar[serialized_parent["id"]]["children"][id] = page
                     else:
-                        dir_position = get_parent_position(
-                            str(parent), len(self.sidebar)
-                        )
-                        self.sidebar[str(parent)] = {
-                            "position": dir_position,
+                        self.sidebar[serialized_parent["id"]] = {
+                            "position": serialized_parent["position"],
                             "children": {id: page},
                             "title": parent,
                         }
@@ -110,9 +111,12 @@ class Crawler:
     def get_template_data(self, path=None):
         if not path:
             # on route / renders the first page
-            dir = list(self.sidebar.keys())[0]
-            filename = list(self.sidebar[dir]["children"].keys())[0]
-            path = f"{dir}/{filename}"
+            if len(self.sidebar) != 0:
+                dir = list(self.sidebar.keys())[0]
+                filename = list(self.sidebar[dir]["children"].keys())[0]
+                path = f"{dir}/{filename}"
+            else:
+                raise Exception(f"No files found in {PAGES_DIR}")
 
         try:
             content = self.page_content(path)

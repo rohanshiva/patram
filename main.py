@@ -35,8 +35,6 @@ async def handle_raw_request(request: Request, page=None):
     return data
 
 
-
-
 @app.get("/raw/{page}")
 async def raw_page_root(request: Request, page: str):
     return await handle_raw_request(request, page)
