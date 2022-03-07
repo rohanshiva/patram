@@ -20,5 +20,4 @@ class HighlightRenderer(mistune.HTMLRenderer):
             "<span><code class='inline-code'>" + mistune.escape(code) + "</code></span>"
         )
 
-
 markdown = mistune.create_markdown(renderer=HighlightRenderer())

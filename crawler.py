@@ -105,7 +105,8 @@ class Crawler:
         with os.scandir(f"{PAGES_DIR}/{dir}") as entries:
             for entry in entries:
                 if entry.is_dir():
-                    await self.build(entry.name)
+                    if len(os.listdir(f"{PAGES_DIR}/{entry.name}")) > 0:
+                        await self.build(entry.name)
                 else:
 
                     if not entry.name.endswith(".md"):
@@ -147,8 +148,7 @@ class Crawler:
         path = f"{PAGES_DIR}/{dir}/{filename}.md"
 
         content = self.read_page(path)
-
-        if content:
+        if content != None:
             return content
         else:
             raise Exception("File not found.")
