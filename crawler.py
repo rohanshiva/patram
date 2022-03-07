@@ -101,12 +101,6 @@ class Crawler:
 
         return res
 
-    def get_logo(self):
-        f = open("logo.svg", "r")
-        res = f.read()
-        f.close()
-        return res
-
     async def build(self, dir=""):
         with os.scandir(f"{PAGES_DIR}/{dir}") as entries:
             for entry in entries:
@@ -121,12 +115,14 @@ class Crawler:
                     serialized_file = serialize(entry.name)
 
                     if self.sidebar.get(serialized_dir["raw"]):
-                        self.sidebar[serialized_dir["raw"]]["children"][
-                            serialized_file["raw"]
-                        ] = {
-                            "position": serialized_file["position"],
-                            "name": serialized_file["name"],
-                        }
+                        dir_position = self.sidebar[serialized_dir["raw"]]["position"]
+                        if serialized_dir["position"] == dir_position:
+                            self.sidebar[serialized_dir["raw"]]["children"][
+                                serialized_file["raw"]
+                            ] = {
+                                "position": serialized_file["position"],
+                                "name": serialized_file["name"],
+                            }
                     else:
                         self.sidebar[serialized_dir["raw"]] = {
                             "position": serialized_dir["position"],
@@ -140,6 +136,8 @@ class Crawler:
                         }
 
     def page_content(self, path):
+        if not path:
+            return markdown(f"Add some docs in {PAGES_DIR}/ folder, and check back here") 
 
         try:
             dir, filename = self.parse_path(path)
@@ -158,18 +156,23 @@ class Crawler:
     def get_template_data(self, path=None):
         if not path:
             # on / route renders the first page
-            dir = list(self.sidebar.keys())[0]
-            filename = list(self.sidebar[dir]["children"].keys())[0]
-            path = f"{dir}/{filename}"
+            if len(self.sidebar) > 0:
+                dir = list(self.sidebar.keys())[0]
+                filename = list(self.sidebar[dir]["children"].keys())[0]
+                path = f"{dir}/{filename}"
+            else:
+                path = None
 
         try:
             content = self.page_content(path)
         except Exception as e:
             raise Exception(str(e))
 
-        dir, filename = "", path
-        if "/" in path:
-            dir, filename = path.split("/")
+        dir, filename = "", ""
+        if path:
+            dir, filename = "", path
+            if "/" in path:
+                dir, filename = path.split("/")
 
         res = {
             "title": "Patram",
@@ -177,7 +180,6 @@ class Crawler:
             "current_filename": filename,
             "sidebar": self.sidebar,
             "content": content,
-            "svg": self.get_logo(),
         }
 
         return res

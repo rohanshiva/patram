@@ -1,13 +1,13 @@
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
-from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 from crawler import Crawler
 
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
+app.mount("/favicons", StaticFiles(directory="favicons"), name="favicons")
 
 async def handle_render(request: Request, page=None):
     crawler = Crawler()
