@@ -5,17 +5,32 @@
   <title>{{title}}</title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
-    rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicons/favicon-16x16.png">
+  <link rel="manifest" href="favicons/site.webmanifest">
 </head>
 
 <body class="theme-light">
   <div class="wrapper">
     <div class="sidebar">
       <div class="logo-wrapper">
-        {{ svg|safe }}
+        <div class="logo">
+          <!-- Logo you can customize this-->
+          <svg width="3rem" height="3rem" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M30 60C46.5685 60 60 46.5685 60 30C60 13.4315 46.5685 0 30 0C13.4315 0 0 13.4315 0 30C0 46.5685 13.4315 60 30 60Z"
+              fill="var(--logo-bg)" />
+            <path
+              d="M33.1388 30.7275V24.9375H26.1188V30.9675C26.1188 32.3875 26.3789 33.4175 26.8988 34.0575C27.4188 34.6775 28.2188 34.9875 29.2988 34.9875C30.3588 34.9875 31.2588 34.6075 31.9988 33.8475C32.7588 33.0675 33.1388 32.0275 33.1388 30.7275ZM38.9588 22.9275V24.9375H35.5088V42.1875H33.1388V35.0475C32.2188 36.2675 30.8888 36.8875 29.1488 36.9075C25.5488 36.9075 23.7488 34.9175 23.7488 30.9375V24.9375H21.0488V22.9275H38.9588Z"
+              fill="var(--logo-text)" />
+          </svg>
+        </div>
         <div class="title">{{title}}</div>
         <div class="menu-buttons">
           <button class="open-button" id="open-button" onclick="openMenu()">
@@ -37,9 +52,14 @@
           </button>
         </div>
         <button class="theme-button" onclick="switchTheme()">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+          <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            class="feather feather-sun">
+            class="feather feather-moon moon" id="moon" style="display: inherit;">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="feather feather-sun sun" id="sun" style="display: none;">
             <circle cx="12" cy="12" r="5"></circle>
             <line x1="12" y1="1" x2="12" y2="3"></line>
             <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -55,42 +75,48 @@
 
       <div class="links visible" id="links">
         {% for dir in sidebar %} {% if dir != "" %}
-        <div class="dir">{{ dir }}</div>
-        {% endif %} {% for note in sidebar[dir] %} {% if key == note[1]['filename'] %}
-        <a class="key selected" key="{{ note[1]['filename'] }}" dir="{{dir}}" name="link" onclick="switchNote(this)">{{ note[1]['name'] }}</a>
+        <div class="dir">{{ sidebar[dir]['name'] }}</div>
+        {% endif %} {% for note in sidebar[dir]["children"] %} {% if current_dir == dir and current_filename == note %}
+        <a class="key selected" key="{{ note }}" dir="{{dir}}" name="link" onclick="switchNote(this)">{{
+          sidebar[dir]['children'][note]['name'] }}</a>
         {% else %}
-        <a class="key" key="{{ note[1]['filename'] }}" dir="{{dir}}" name="link" onclick="switchNote(this)">{{ note[1]['name'] }}</a>
+        <a class="key" key="{{ note }}" dir="{{dir}}" name="link" onclick="switchNote(this)">{{
+          sidebar[dir]['children'][note]['name'] }}</a>
         {% endif %} {% endfor %} {% endfor %}
       </div>
     </div>
-    <div class="content" role="main" id="content">{{note|safe}}</div>
+    <div class="content" role="main" id="content">{{content|safe}}</div>
   </div>
 </body>
 <style>
   :root {
-    --bg: white;
+    --bg: #FFFEFE;
     --primary: black;
     --secondary: #7c7d80;
-    --accent: #51007c;
+    --accent: #0068ff;
     --content: black;
-    --highlight: #f8ecff;
     --hover-highlight: #f4f4f6;
-    --code-bg: #FAF495;
+    --code-bg: #f6f8fa;
     --code-color: black;
     --border-color: #d6d8dc;
+    /* Logo Colors */
+    --logo-bg: #131415;
+    --logo-text: #FFFEFE;
   }
 
   [data-theme="dark"] {
     --bg: #131415;
     --primary: white;
     --secondary: #b1b6be;
-    --accent: #f8ecff;
+    --accent: #ff7c7c;
     --content: white;
-    --highlight: #51007c;
-    --hover-highlight: #1d1b22;
-    --code-bg: rgb(40, 44, 52);
-    --code-color: rgb(171, 178, 191);
+    --hover-highlight: #ff7c7c38;
+    --code-bg: #292d3e;
+    --code-color: white;
     --border-color: #2c2f35;
+    /* Logo Colors */
+    --logo-bg: white;
+    --logo-text: #FF2E2E;
   }
 
   body {
@@ -106,6 +132,27 @@
     color: var(--code-color);
     background-color: var(--code-bg);
     font-weight: 900;
+  }
+
+  pre {
+    overflow-x: scroll;
+  }
+
+  pre, code {
+    font-family: Consolas, monospace;
+  }
+
+  .inline-code {
+    padding: 0.2rem;
+    color: var(--code-color);
+    background-color: var(--bg);
+    font-weight: 900;
+  }
+
+  .highlight {
+    background-color: var(--code-bg);
+    padding: 0em 1em;
+    border-radius: 0.3rem;
   }
 
   .wrapper {
@@ -143,6 +190,7 @@
 
   a:hover {
     cursor: pointer;
+    color: var(--content);
     background-color: var(--hover-highlight);
   }
 
@@ -168,7 +216,8 @@
   }
 
   .title {
-    font-size: 2rem;
+    font-size: 1.2rem;
+    font-weight: 600;
     margin-left: 1rem;
     margin-right: auto;
     color: var(--primary);
@@ -177,7 +226,7 @@
   .sidebar {
     min-width: 250px;
     width: 250px;
-    border-right: 1px solid var(--secondary);
+    border-right: 1px solid var(--primary);
     height: 100vh;
   }
 
@@ -214,7 +263,7 @@
   .content {
     display: flex;
     flex-direction: column;
-    padding: 2rem 1rem 2rem 1rem;
+    padding: 2rem 4rem;
     max-height: 100vh;
     overflow-y: scroll;
     color: var(--content);
@@ -222,6 +271,7 @@
   }
 
   ::-webkit-scrollbar {
+    height: 0.25rem;
     width: 0.25rem;
   }
 
@@ -231,6 +281,12 @@
 
   ::-webkit-scrollbar-thumb {
     background: var(--accent);
+  }
+
+  @media screen and (max-width: 800px) {
+    .content {
+      padding: 2rem 2rem;
+    }
   }
 
   @media only screen and (max-width: 620px) {
@@ -341,9 +397,15 @@
 
   function switchTheme() {
     if (document.documentElement.getAttribute("data-theme") === "dark") {
-      document.documentElement.setAttribute("data-theme", "ligh");
+      console.log("switching to light")
+      document.documentElement.setAttribute("data-theme", "light");
+      document.getElementById("moon").style.display = "inherit";
+      document.getElementById("sun").style.display = "none";
     } else {
+      console.log("switching to dark")
       document.documentElement.setAttribute("data-theme", "dark");
+      document.getElementById("moon").style.display = "none";
+      document.getElementById("sun").style.display = "inherit";
     }
   }
 

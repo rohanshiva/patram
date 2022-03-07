@@ -1,49 +1,56 @@
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
-from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 from crawler import Crawler
 
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
+app.mount("/favicons", StaticFiles(directory="favicons"), name="favicons")
 
-async def handle_render(request: Request, page = None):
+async def handle_render(request: Request, page=None):
     crawler = Crawler()
     await crawler.setup()
     path = f"{page}" if page else None
-    data = crawler.get_template_data(path)
-    data["request"] = request
+
+    try:
+        data = crawler.get_template_data(path)
+        data["request"] = request
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
     return templates.TemplateResponse("index.html", data)
 
-@app.get("/favicon.ico")
-def render_svg():
-    f = open("logo.svg", "r")
-    svg = f.read()
-    return svg
+
+async def handle_raw_request(request: Request, page=None):
+    crawler = Crawler()
+    await crawler.setup()
+    path = f"{page}" if page else None
+
+    try:
+        data = crawler.page_content(path)
+    except Exception as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
+    return data
+
 
 @app.get("/raw/{page}")
 async def raw_page_root(request: Request, page: str):
-    crawler = Crawler()
-    await crawler.setup()
-    path = f"{page}"
-    data = crawler.page_content(path)
-    return data
+    return await handle_raw_request(request, page)
 
 
 @app.get("/raw/{dir}/{page}")
 async def raw_page(request: Request, dir: str, page: str):
-    crawler = Crawler()
-    await crawler.setup()
     path = f"{dir}/{page}"
-    print(path)
-    data = crawler.page_content(path)
-    return data
+    return await handle_raw_request(request, path)
+
 
 @app.get("/")
 async def render_default(request: Request):
     return await handle_render(request)
+
 
 @app.get("/{page}")
 async def render_page(request: Request, page: str):
@@ -53,5 +60,4 @@ async def render_page(request: Request, page: str):
 @app.get("/{dir}/{page}")
 async def render_page(request: Request, dir: str, page: str):
     path = f"{dir}/{page}"
-    print(path)
     return await handle_render(request, path)
