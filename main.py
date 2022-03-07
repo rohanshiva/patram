@@ -5,9 +5,11 @@ from crawler import Crawler
 
 
 app = FastAPI()
-templates = Jinja2Templates(directory="templates")
 
 app.mount("/favicons", StaticFiles(directory="favicons"), name="favicons")
+app.mount("/images", StaticFiles(directory="images"), name="images")
+
+templates = Jinja2Templates(directory="templates")
 
 async def handle_render(request: Request, page=None):
     crawler = Crawler()
