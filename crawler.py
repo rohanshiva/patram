@@ -71,7 +71,7 @@ class Crawler:
 
     def read_page(self, path):
         if os.path.exists(path):
-            f = open(path)
+            f = open(path, encoding="utf8")
             raw_content = f.read()
             f.close()
             return markdown(raw_content)
