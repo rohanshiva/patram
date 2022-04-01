@@ -71,10 +71,10 @@ class Crawler:
 
     def read_page(self, path):
         if os.path.exists(path):
-            f = open(path)
-            raw_content = f.read()
-            f.close()
-            return markdown(raw_content)
+            with open(path, encoding="utf8") as f:
+                f = open(path, encoding="utf8")
+                raw_content = f.read()
+                return markdown(raw_content)
         else:
             return None
 
@@ -105,7 +105,8 @@ class Crawler:
         with os.scandir(f"{PAGES_DIR}/{dir}") as entries:
             for entry in entries:
                 if entry.is_dir():
-                    await self.build(entry.name)
+                    if len(os.listdir(f"{PAGES_DIR}/{entry.name}")) > 0:
+                        await self.build(entry.name)
                 else:
 
                     if not entry.name.endswith(".md"):
@@ -137,7 +138,9 @@ class Crawler:
 
     def page_content(self, path):
         if not path:
-            return markdown(f"Add some docs in {PAGES_DIR}/ folder, and check back here") 
+            return markdown(
+                f"Add some docs in {PAGES_DIR}/ folder, and check back here"
+            )
 
         try:
             dir, filename = self.parse_path(path)
@@ -148,7 +151,7 @@ class Crawler:
 
         content = self.read_page(path)
 
-        if content:
+        if content != None:
             return content
         else:
             raise Exception("File not found.")
