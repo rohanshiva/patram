@@ -1,345 +1,266 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <title>{{title}}</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/favicons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/favicons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/favicons/favicon-16x16.png"
+    />
+    <link rel="manifest" href="/favicons/site.webmanifest" />
+  </head>
 
-<head>
-  <title>{{title}}</title>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap"
-    rel="stylesheet">
-  <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
-  <link rel="manifest" href="/favicons/site.webmanifest">
-</head>
+  <body class="theme-light">
+    <div class="wrapper">
+      <div class="sidebar">
+        <div class="logo-wrapper">
+          <abbr title="Toggle Theme!">
+            <div class="logo" onclick="switchTheme()">
+              <!-- Logo you can customize this-->
+              <svg
+                width="3rem"
+                height="3rem"
+                viewBox="0 0 60 60"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M30 60C46.5685 60 60 46.5685 60 30C60 13.4315 46.5685 0 30 0C13.4315 0 0 13.4315 0 30C0 46.5685 13.4315 60 30 60Z"
+                  fill="var(--logo-bg)"
+                />
+                <path
+                  d="M33.1388 30.7275V24.9375H26.1188V30.9675C26.1188 32.3875 26.3789 33.4175 26.8988 34.0575C27.4188 34.6775 28.2188 34.9875 29.2988 34.9875C30.3588 34.9875 31.2588 34.6075 31.9988 33.8475C32.7588 33.0675 33.1388 32.0275 33.1388 30.7275ZM38.9588 22.9275V24.9375H35.5088V42.1875H33.1388V35.0475C32.2188 36.2675 30.8888 36.8875 29.1488 36.9075C25.5488 36.9075 23.7488 34.9175 23.7488 30.9375V24.9375H21.0488V22.9275H38.9588Z"
+                  fill="var(--logo-text)"
+                />
+              </svg>
+            </div>
+          </abbr>
 
-<body class="theme-light">
-  <div class="wrapper">
-    <div class="sidebar">
-      <div class="logo-wrapper">
-        <div class="logo">
-          <!-- Logo you can customize this-->
-          <svg width="3rem" height="3rem" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M30 60C46.5685 60 60 46.5685 60 30C60 13.4315 46.5685 0 30 0C13.4315 0 0 13.4315 0 30C0 46.5685 13.4315 60 30 60Z"
-              fill="var(--logo-bg)" />
-            <path
-              d="M33.1388 30.7275V24.9375H26.1188V30.9675C26.1188 32.3875 26.3789 33.4175 26.8988 34.0575C27.4188 34.6775 28.2188 34.9875 29.2988 34.9875C30.3588 34.9875 31.2588 34.6075 31.9988 33.8475C32.7588 33.0675 33.1388 32.0275 33.1388 30.7275ZM38.9588 22.9275V24.9375H35.5088V42.1875H33.1388V35.0475C32.2188 36.2675 30.8888 36.8875 29.1488 36.9075C25.5488 36.9075 23.7488 34.9175 23.7488 30.9375V24.9375H21.0488V22.9275H38.9588Z"
-              fill="var(--logo-text)" />
-          </svg>
+          <div class="title">{{title}}</div>
+          <div class="menu-buttons">
+            <button class="open-button" id="open-button" onclick="openMenu()">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-menu"
+              >
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+              </svg>
+            </button>
+            <button
+              class="close-button"
+              id="close-button"
+              onclick="closeMenu()"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-x"
+              >
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+          <abbr title="Toggle Theme!">
+            <button class="theme-button" onclick="switchTheme()">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="1rem"
+                height="1rem"
+                viewBox="0 0 24 24"
+                fill="var(--primary)"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-moon moon"
+                id="moon"
+                style="display: inherit"
+              >
+                <path
+                  d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+                ></path>
+              </svg>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="1rem"
+                height="1rem"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-sun sun"
+                id="sun"
+                style="display: none"
+              >
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+              </svg>
+            </button>
+          </abbr>
         </div>
-        <div class="title">{{title}}</div>
-        <div class="menu-buttons">
-          <button class="open-button" id="open-button" onclick="openMenu()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-              class="feather feather-menu">
-              <line x1="3" y1="12" x2="21" y2="12"></line>
-              <line x1="3" y1="6" x2="21" y2="6"></line>
-              <line x1="3" y1="18" x2="21" y2="18"></line>
-            </svg>
-          </button>
-          <button class="close-button" id="close-button" onclick="closeMenu()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-              class="feather feather-x">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-          </button>
-        </div>
-        <button class="theme-button" onclick="switchTheme()">
-          <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            class="feather feather-moon moon" id="moon" style="display: inherit;">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-          </svg>
-          <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            class="feather feather-sun sun" id="sun" style="display: none;">
-            <circle cx="12" cy="12" r="5"></circle>
-            <line x1="12" y1="1" x2="12" y2="3"></line>
-            <line x1="12" y1="21" x2="12" y2="23"></line>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-            <line x1="1" y1="12" x2="3" y2="12"></line>
-            <line x1="21" y1="12" x2="23" y2="12"></line>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-          </svg>
-        </button>
-      </div>
 
-      <div class="links visible" id="links">
-        {% for dir in sidebar %} {% if dir != "" %}
-        <div class="dir">{{ sidebar[dir]['name'] }}</div>
-        {% endif %} {% for note in sidebar[dir]["children"] %} {% if current_dir == dir and current_filename == note %}
-        <a class="key selected" key="{{ note }}" dir="{{dir}}" name="link" onclick="switchNote(this)">{{
-          sidebar[dir]['children'][note]['name'] }}</a>
-        {% else %}
-        <a class="key" key="{{ note }}" dir="{{dir}}" name="link" onclick="switchNote(this)">{{
-          sidebar[dir]['children'][note]['name'] }}</a>
-        {% endif %} {% endfor %} {% endfor %}
+        <div class="links visible" id="links">
+          {% for dir in sidebar %} {% if dir != "" %}
+          <div class="dir-title">{{ sidebar[dir]['name'] }}</div>
+          {% endif %} {% for page in sidebar[dir]["children"] %} {% if
+          current_dir == dir and current_filename == page %}
+          <a
+            class="page-title selected"
+            key="{{ page }}"
+            dir="{{dir}}"
+            name="link"
+            onclick="switchPage(this)"
+            >{{ sidebar[dir]['children'][page]['name'] }}</a
+          >
+          {% else %}
+          <a
+            class="page-title"
+            key="{{ page }}"
+            dir="{{dir}}"
+            name="link"
+            onclick="switchPage(this)"
+            >{{ sidebar[dir]['children'][page]['name'] }}</a
+          >
+          {% endif %} {% endfor %} {% endfor %}
+        </div>
       </div>
+      <div class="content" role="main" id="content">{{content|safe}}</div>
     </div>
-    <div class="content" role="main" id="content">{{content|safe}}</div>
-  </div>
-</body>
-<style>
-  :root {
-    --bg: #FFFEFE;
-    --primary: black;
-    --secondary: #7c7d80;
-    --accent: #0068ff;
-    --content: black;
-    --hover-highlight: #f4f4f6;
-    --code-bg: #f6f8fa;
-    --code-color: black;
-    --border-color: #d6d8dc;
-    /* Logo Colors */
-    --logo-bg: #131415;
-    --logo-text: #FFFEFE;
-  }
-
-  [data-theme="dark"] {
-    --bg: #131415;
-    --primary: white;
-    --secondary: #b1b6be;
-    --accent: #ff7c7c;
-    --content: white;
-    --hover-highlight: #ff7c7c38;
-    --code-bg: #292d3e;
-    --code-color: white;
-    --border-color: #2c2f35;
-    /* Logo Colors */
-    --logo-bg: white;
-    --logo-text: #FF2E2E;
-  }
-
-  body {
-    font-family: "Inter", sans-serif;
-    font-weight: 400;
-    background-color: var(--bg);
-    color: var(--primary);
-    margin: 0;
-  }
-
-  code {
-    padding: 0.2rem;
-    color: var(--code-color);
-    background-color: var(--code-bg);
-    font-weight: 900;
-  }
-
-  pre {
-    overflow-x: scroll;
-  }
-
-  pre, code {
-    font-family: Consolas, monospace;
-  }
-
-  .inline-code {
-    padding: 0.2rem;
-    color: var(--code-color);
-    background-color: var(--bg);
-    font-weight: 900;
-  }
-
-  .highlight {
-    background-color: var(--code-bg);
-    padding: 0em 1em;
-    border-radius: 0.3rem;
-  }
-
-  blockquote {
-    border-left: 0.3rem solid var(--accent);
-    margin-block-start: 0em;
-    margin-block-end: 0em;
-    margin-inline-start: 0em;
-    margin-inline-end: 0em;
-    padding-left: 1rem;
-    margin-top: 1rem;
-  }
-
-  .wrapper {
-    display: flex;
-    flex-direction: row;
-    max-height: 100vh;
-  }
-
-  .visible {
-    display: flex;
-  }
-
-  .tag {
-    font-weight: 700;
-    font-size: 25px;
-  }
-
-  .links {
-    display: flex;
-    flex-direction: column;
-    overflow-y: scroll;
-    max-height: 90vh;
-  }
-
-  a {
-    color: var(--secondary);
-    text-decoration: none;
-  }
-
-  .selected {
-    color: var(--accent);
-    text-decoration: underline;
-    font-weight: 600;
-  }
-
-  a:hover {
-    cursor: pointer;
-    color: var(--content);
-    background-color: var(--hover-highlight);
-  }
-
-  .key {
-    padding: 0.5rem 1rem 0.5rem 1rem;
-    font-size: 0.875rem;
-  }
-
-  .dir {
-    padding: 2rem 1rem 0.5rem 1rem;
-    font-size: 0.875rem;
-    font-weight: 700;
-    color: var(--content);
-  }
-
-  .logo-wrapper {
-    display: flex;
-    align-items: center;
-    height: 10vh;
-    max-height: 10vh;
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-
-  .title {
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin-left: 1rem;
-    margin-right: auto;
-    color: var(--primary);
-  }
-
-  .sidebar {
-    min-width: 250px;
-    width: 250px;
-    border-right: 1px solid var(--primary);
-    height: 100vh;
-  }
-
-  .menu-buttons {
-    display: none;
-  }
-
-  .open-button {
-    background-color: transparent;
-    color: var(--primary);
-    border: none;
-    outline: none;
-    cursor: pointer;
-    display: none;
-  }
-
-  .close-button {
-    background-color: transparent;
-    color: var(--primary);
-    border: none;
-    outline: none;
-    cursor: pointer;
-    display: none;
-  }
-
-  .theme-button {
-    background-color: transparent;
-    color: var(--primary);
-    border: none;
-    outline: none;
-    cursor: pointer;
-  }
-
-  .content {
-    display: flex;
-    flex-direction: column;
-    padding: 2rem 4rem;
-    max-height: 100vh;
-    overflow-y: scroll;
-    color: var(--content);
-    width: 100%;
-  }
-
-  ::-webkit-scrollbar {
-    height: 0.25rem;
-    width: 0.25rem;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: var(--accent);
-  }
-
-  @media screen and (max-width: 800px) {
-    .content {
-      padding: 2rem 2rem;
-    }
-  }
-
-  @media only screen and (max-width: 620px) {
-    .sidebar {
-      max-width: 100vw;
-      width: auto;
-      border-right: none;
-      height: auto;
+  </body>
+  <style>
+    :root {
+      --bg: #fffefe;
+      --primary: black;
+      --secondary: #7c7d80;
+      --accent: #0068ff;
+      --content: black;
+      --hover-highlight: #f4f4f6;
+      --code-bg: #f6f8fa;
+      --code-color: black;
+      --border-color: #d6d8dc;
+      /* Logo Colors */
+      --logo-bg: #131415;
+      --logo-text: #fffefe;
     }
 
-    .links {
-      overflow-y: scroll;
-      max-height: max-content;
-      height: max-content;
+    [data-theme="dark"] {
+      --bg: #131415;
+      --primary: white;
+      --secondary: #b1b6be;
+      --accent: #ff7c7c;
+      --content: white;
+      --hover-highlight: #ff7c7c38;
+      --code-bg: #292d3e;
+      --code-color: white;
+      --border-color: #2c2f35;
+      /* Logo Colors */
+      --logo-bg: white;
+      --logo-text: #ff2e2e;
+    }
+
+    body {
+      font-family: "Inter", sans-serif;
+      font-weight: 400;
+      background-color: var(--bg);
+      color: var(--primary);
+      margin: 0;
+    }
+
+    code {
+      padding: 0.2rem;
+      color: var(--code-color);
+      font-weight: 900;
+    }
+
+    pre {
+      overflow-x: scroll;
+    }
+
+    pre,
+    code {
+      font-family: Consolas, monospace;
+    }
+
+    .inline-code {
+      padding: 0.2rem;
+      color: var(--code-color);
+      background-color: var(--bg);
+      font-weight: 900;
+    }
+
+    .highlight {
+      background-color: var(--code-bg);
+      padding: 0em 1em;
+      border-radius: 0.3rem;
+    }
+
+    blockquote {
+      border-left: 0.3rem solid var(--accent);
+      margin-block-start: 0em;
+      margin-block-end: 0em;
+      margin-inline-start: 0em;
+      margin-inline-end: 0em;
+      padding-left: 1rem;
+      margin-top: 1rem;
     }
 
     .wrapper {
-      flex-direction: column;
-    }
-
-    .content {
-      max-height: max-content;
-      overflow-y: unset;
-      padding: 2rem 1rem 2rem 1rem;
-      margin-bottom: 2rem;
-      min-width: auto;
-      width: auto;
-    }
-
-    .open-button {
       display: flex;
-    }
-
-    .menu-buttons {
-      display: flex;
+      flex-direction: row;
+      max-height: 100vh;
     }
 
     .visible {
-      display: none;
+      display: flex;
     }
-  }
 
-  @media only screen and (min-width: 620px) {
     .links {
       display: flex;
       flex-direction: column;
@@ -347,82 +268,272 @@
       max-height: 90vh;
     }
 
+    a {
+      color: var(--secondary);
+      text-decoration: none;
+    }
+
+    .selected {
+      color: var(--accent);
+      background-color: var(--hover-highlight);
+      /* text-decoration: underline; */
+      font-weight: 600;
+    }
+
+    .selected:hover {
+      color: var(--accent);
+    }
+
+    a:hover {
+      cursor: pointer;
+      color: var(--content);
+      /* background-color: var(--hover-highlight); */
+    }
+
+    .page-title {
+      padding: 0.5rem 1rem 0.5rem 1rem;
+      margin: 0rem 1rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      border-radius: 0.5rem;
+    }
+
+    .dir-title {
+      padding: 2rem 1rem 0.5rem 1rem;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--content);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .logo-wrapper {
+      display: flex;
+      align-items: center;
+      height: 10vh;
+      max-height: 10vh;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    .logo {
+      cursor: pointer;
+    }
+
+    .title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-left: 1rem;
+      margin-right: auto;
+      color: var(--primary);
+    }
+
+    .sidebar {
+      min-width: 250px;
+      width: 250px;
+      border-right: 0.0625rem solid var(--secondary);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    button {
+      background-color: var(--bg);
+      color: var(--primary);
+    }
+
     .menu-buttons {
       display: none;
     }
 
-    .visible {
+    .open-button {
+      border: none;
+      outline: none;
+      cursor: pointer;
+      display: none;
+    }
+
+    .close-button {
+      border: none;
+      outline: none;
+      cursor: pointer;
+      display: none;
+    }
+
+    .theme-button {
+      border: none;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .content {
       display: flex;
+      flex-direction: column;
+      padding: 2rem 12vw;
+      max-height: 100vh;
+      overflow-y: scroll;
+      color: var(--content);
+      width: 100%;
     }
-  }
-</style>
-<script>
-  function openMenu() {
-    document.getElementById("open-button").style.display = "none";
-    document.getElementById("close-button").style.display = "block";
-    document.getElementById("links").classList.toggle("visible");
-  }
 
-  function closeMenu() {
-    document.getElementById("close-button").style.display = "none";
-    document.getElementById("open-button").style.display = "block";
-    document.getElementById("links").classList.toggle("visible");
-  }
-
-  function removeSelectedLinks() {
-    var elements = document.getElementsByName("link");
-    for (var i = 0; i < elements.length; i++) {
-      elements[i].classList.remove("selected");
+    ::-webkit-scrollbar {
+      height: 0.25rem;
+      width: 0.25rem;
     }
-  }
-  function serialize(key) {
-    let words = key.split(" ");
-    words = words.map(
-      (word) => word.charAt(0).toLowerCase() + word.substr(1)
-    );
-    const serializedKey = words.join("-");
-    return serializedKey;
-  }
 
-  async function replaceNote(path) {
-    const res = await fetch(`/raw/${path}`);
-    const content = await res.json();
-    document.getElementById("content").innerHTML = content;
-    removeSelectedLinks();
-  }
-
-  async function switchNote(link) {
-    let key = link.getAttribute("key");
-    let dir = link.getAttribute("dir");
-    dir = serialize(dir);
-    key = serialize(key);
-    const path = dir === "" ? `${key}` : `${dir}/${key}`;
-    await replaceNote(path);
-    link.classList.add("selected");
-    const pageUrl = `${location.origin}/${path}`;
-    const title = "Peaks";
-    const state = {};
-    window.history.pushState(null, null, pageUrl);
-  }
-
-  function switchTheme() {
-    if (document.documentElement.getAttribute("data-theme") === "dark") {
-      console.log("switching to light")
-      document.documentElement.setAttribute("data-theme", "light");
-      document.getElementById("moon").style.display = "inherit";
-      document.getElementById("sun").style.display = "none";
-    } else {
-      console.log("switching to dark")
-      document.documentElement.setAttribute("data-theme", "dark");
-      document.getElementById("moon").style.display = "none";
-      document.getElementById("sun").style.display = "inherit";
+    ::-webkit-scrollbar-track {
+      background: transparent;
     }
-  }
 
-  window.addEventListener("popstate", (event) => {
-    // handle "/" case
-    replaceNote(document.location.pathname.substring(1));
-  });
-</script>
+    ::-webkit-scrollbar-thumb {
+      background: var(--accent);
+    }
 
+    @media screen and (max-width: 1024px) {
+      .content {
+        padding: 2rem 8vw;
+      }
+    }
+
+    @media screen and (max-width: 992px) {
+      .content {
+        padding: 2rem 6vw;
+      }
+    }
+
+    @media screen and (max-width: 800px) {
+      .content {
+        padding: 2rem 4vw;
+      }
+    }
+
+    @media only screen and (max-width: 620px) {
+      .sidebar {
+        max-width: 100vw;
+        width: auto;
+        border-right: none;
+        height: auto;
+      }
+
+      .links {
+        overflow-y: scroll;
+        max-height: max-content;
+        height: max-content;
+      }
+
+      .wrapper {
+        flex-direction: column;
+      }
+
+      .content {
+        max-height: max-content;
+        overflow-y: unset;
+        padding: 2rem 1rem 2rem 1rem;
+        margin-bottom: 2rem;
+        min-width: auto;
+        width: auto;
+      }
+
+      .open-button {
+        display: flex;
+      }
+
+      .menu-buttons {
+        display: flex;
+      }
+
+      .visible {
+        display: none;
+      }
+    }
+
+    @media only screen and (min-width: 620px) {
+      .links {
+        display: flex;
+        flex-direction: column;
+        overflow-y: scroll;
+        max-height: 90vh;
+      }
+
+      .menu-buttons {
+        display: none;
+      }
+
+      .visible {
+        display: flex;
+      }
+    }
+  </style>
+  <script>
+    function openMenu() {
+      document.getElementById("open-button").style.display = "none";
+      document.getElementById("close-button").style.display = "block";
+      document.getElementById("links").classList.toggle("visible");
+    }
+
+    function closeMenu() {
+      document.getElementById("close-button").style.display = "none";
+      document.getElementById("open-button").style.display = "block";
+      document.getElementById("links").classList.toggle("visible");
+    }
+
+    function removeSelectedLinks() {
+      var elements = document.getElementsByName("link");
+      for (var i = 0; i < elements.length; i++) {
+        elements[i].classList.remove("selected");
+      }
+    }
+    function serialize(key) {
+      let words = key.split(" ");
+      words = words.map(
+        (word) => word.charAt(0).toLowerCase() + word.substr(1)
+      );
+      const serializedKey = words.join("-");
+      return serializedKey;
+    }
+
+    async function replaceNote(path) {
+      const res = await fetch(`/raw/${path}`);
+      const content = await res.json();
+      document.getElementById("content").innerHTML = content;
+      removeSelectedLinks();
+    }
+
+    async function switchPage(link) {
+      let key = link.getAttribute("key");
+      let dir = link.getAttribute("dir");
+      dir = serialize(dir);
+      key = serialize(key);
+      const path = dir === "" ? `${key}` : `${dir}/${key}`;
+      await replaceNote(path);
+      link.classList.add("selected");
+      const pageUrl = `${location.origin}/${path}`;
+      const title = "Peaks";
+      const state = {};
+      window.history.pushState(null, null, pageUrl);
+    }
+
+    function switchTheme() {
+      if (document.documentElement.getAttribute("data-theme") === "dark") {
+        console.log("switching to light");
+        document.documentElement.setAttribute("data-theme", "light");
+        document.getElementById("moon").style.display = "inherit";
+        document.getElementById("sun").style.display = "none";
+      } else {
+        console.log("switching to dark");
+        document.documentElement.setAttribute("data-theme", "dark");
+        document.getElementById("moon").style.display = "none";
+        document.getElementById("sun").style.display = "inherit";
+      }
+    }
+
+    window.addEventListener("popstate", (event) => {
+      // handle "/" case
+      replaceNote(document.location.pathname.substring(1));
+    });
+  </script>
 </html>

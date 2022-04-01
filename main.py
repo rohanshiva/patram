@@ -11,6 +11,7 @@ app.mount("/images", StaticFiles(directory="images"), name="images")
 
 templates = Jinja2Templates(directory="templates")
 
+
 async def handle_render(request: Request, page=None):
     crawler = Crawler()
     await crawler.setup()

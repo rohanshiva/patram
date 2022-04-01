@@ -27,3 +27,6 @@ Only the content of `2-intro.md` is parsed by the app. However, same file names 
 
 ## Reserved Names
 Please try to avoid using `images` and `favicons` as parent folder names, as those routes are reserved by the app to retrieve images and favicons respectively. However, if you really need to use those names modify the app router accordingly (main.py). 
+
+## Improve Performance
+You can improve your app's load time, by disabling Deta visor using the commend `deta visor disable`.

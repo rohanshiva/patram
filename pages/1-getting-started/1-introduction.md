@@ -1,7 +1,7 @@
 # Patram
 ##### /pa-thrum/ (Leaf 🍃 in Sanskrit) 
 
-Patram is a documentation site builder that is simple, easy to use, 🔥 customizable, and ✨ looking! Simply write your `.md` files and deploy your site with a **one** command**!** 
+Patram is a documentation site builder that is simple, easy to use, 🔥 customizable, and ✨ looking! Simply write your `.md` files and deploy your site with  **one** command**!** 
 
 ## Features
 - Docs are server side rendered -> **SEO** 🚀 
